@@ -7,16 +7,16 @@ namespace Signifly\LaravelStruct\Api\Product\Actions;
 use Exception;
 use Illuminate\Support\Facades\Http;
 
-class CreateProductAction
+class ProductVariantsAction
 {
     /**
-     * ### Create a product
-     * This action creates a new product.
+     * ### Product Variants
+     * This action shows the product variants.
      *
-     * @param  array $products Array of products to be created
+     * @param  int $id ID of the product to be shown
      * @return \Illuminate\Http\Client\Response
      */
-    public static function handle(array $products): \Illuminate\Http\Client\Response
+    public static function handle(int $id): \Illuminate\Http\Client\Response
     {
         try {
             // BaseUrl
@@ -25,7 +25,7 @@ class CreateProductAction
             // Make the API request
             return Http::withHeaders([
                 'Authorization' => config('laravel-struct.token'),
-            ])->post("{$baseUrl}/products", $products);
+            ])->get("{$baseUrl}/products/{$id}/variants");
         } catch (Exception $e) {
             // Return the error
             return throw new Exception($e->getMessage());
