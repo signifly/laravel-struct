@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Signifly\LaravelStruct\Api\Product\Schemas;
 
+/**
+ * Class ProductSchema
+ * @package Signifly\LaravelStruct\Api\Product\Schemas
+ */
 class ProductDescriptionSchema
 {
     /**
-     * Prepare the description for the product
+     * ### Product Description Schema
+     * This method creates a schema for the product description.
      *
      * @param  string $content      content of the description
      * @param  ?string $code        language code (default is set in the config file)

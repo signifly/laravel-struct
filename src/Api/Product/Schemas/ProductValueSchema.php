@@ -4,10 +4,15 @@ declare(strict_types=1);
 
 namespace Signifly\LaravelStruct\Api\Product\Schemas;
 
+/**
+ * Class ProductSchema
+ * @package Signifly\LaravelStruct\Api\Product\Schemas
+ */
 class ProductValueSchema
 {
     /**
-     * Prepare the values for the product
+     * ### Product Value Schema
+     * This method creates a schema for the product value.
      *
      * @param  string $name         name of the product
      * @param  array $description   description of the product
