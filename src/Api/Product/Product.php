@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Signifly\LaravelStruct\Api\Product;
 
 use Exception;
-use Illuminate\Support\Facades\Http;
 use Signifly\LaravelStruct\Traits\ResponseHandler;
 use Signifly\LaravelStruct\Api\Product\Actions\{
     ShowProductAction,
