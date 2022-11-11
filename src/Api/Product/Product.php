@@ -4,229 +4,334 @@ declare(strict_types=1);
 
 namespace Signifly\LaravelStruct\Api\Product;
 
-use Illuminate\Http\Client\Response;
+use Exception;
 use Illuminate\Support\Facades\Http;
-use Signifly\LaravelStruct\Api\Product\Actions\CreateProductAction;
+use Signifly\LaravelStruct\Traits\ResponseHandler;
+use Signifly\LaravelStruct\Api\Product\Actions\{
+    ShowProductAction,
+    CreateProductAction,
+    ProductAttributeValuesAction,
+    ProductClassificationsAction,
+    ProductEnrichmentInsightsAction,
+    ProductReferencesAction,
+    ProductVariantsAction,
+    UpdateProductAction,
+    ShowAllProductsAction,
+};
 
+/**
+ * ### Class Product
+ * This class handles all the product related actions
+ *
+ * @package Signifly\LaravelStruct\Api\Product
+ */
 class Product
 {
+    use ResponseHandler;
+
     /**
-     * Retrieve all products
-     * This route retrieve all products registered
+     * ### Retrieve all products
+     * This method retrieve all products registered.
      *
-     * @param  int $limit                   limit of products to be returned
-     * @param  int $afterId                 id of the product after which the products will be shown
-     * @param  bool $includeArchived        include archived products
-     * @return mixed
+     * @param  int $limit Limit of products to be returned
+     * @param  int $afterId ID of the product after which the products will be shown
+     * @param  bool $includeArchived Include archived products
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
     public static function all(
         int $limit,
         int $afterId = null,
-        bool $includeArchived = false
-    ): mixed {
-        // Set the limit of records to be returned
-        $limitOfRecords = $limit ?? config('laravel-struct.per_page') ?? 1000;
+        bool $includeArchived = false,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Set the limit of records to be returned
+            $limitOfRecords = $limit ?? config('laravel-struct.per_page') ?? 1000;
 
-        // Make the API request
-        $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
-        ])
-            ->get(config('laravel-struct.base_url').'/products', [
-                'limit' => $limitOfRecords,
-                'afterId' => $afterId,
-                'includeArchived' => $includeArchived,
-            ]);
+            // Call the method handler to retrieve all products
+            $request = ShowAllProductsAction::handle(
+                limit: $limitOfRecords,
+                afterId: $afterId,
+                includeArchived: $includeArchived
+            );
 
-        // Return the response
-        return $request->json();
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (Exception $e) {
+            // Return the error
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
-     * Show a product
-     * This route shows a single product
+     * ### Show a product
+     * This method shows a single product.
      *
-     * @param  int $id      id of the product to be shown
-     * @return mixed
+     * @param  int $id ID of the product to be shown
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
-    public static function show(int $id): mixed
-    {
-        // Make the API request
-        $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
-        ])
-            ->get(config('laravel-struct.base_url')."/products/{$id}");
+    public static function show(
+        int $id,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Call the method handler to show a product
+            $request = ShowProductAction::handle(id: $id);
 
-        // Return the response
-        return $request->json();
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (Exception $e) {
+            // Return the error
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
-     * Create a product
-     * This route creates a product
+     * ### Create a product
+     * This method creates a product.
      *
-     * @param  string $productStructureUid          uid of the product structure to be used
-     * @param  string $variationDefinitionUid       uid of the variation definition to be used
-     * @param  array $categoryIds                   array of category ids to be used
-     * @param  int $primaryCategoryId               id of the primary category to be used
-     * @param  array $values                        array of properties to be used
-     * @return mixed
+     * @param  string $productStructureUid UID of the product structure to be used
+     * @param  string $variationDefinitionUid UID of the variation definition to be used
+     * @param  array $categoryIds Array of category ids to be used
+     * @param  int $primaryCategoryId ID of the primary category to be used
+     * @param  array $values Array of properties to be used
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
     public static function create(
         string $productStructureUid,
         string $variationDefinitionUid,
         array $categoryIds,
         int $primaryCategoryId,
-        array $values
-    ): mixed {
-        // Product Array
-        $productToBeCreated = [
-            [
-                'ProductStructureUid' => $productStructureUid,
-                'VariationDefinitionUid' => $variationDefinitionUid,
-                'CategoryIds' => $categoryIds,
-                'PrimaryCategoryId' => $primaryCategoryId,
-                'Values' => $values,
-            ]
-        ];
-        // Make the API request
-        $request = CreateProductAction::handle(products: $productToBeCreated);
+        array $values,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Product Array
+            // The product must be wrapped in an array before sending it to the API
+            $productToBeCreated = [
+                [
+                    'ProductStructureUid' => $productStructureUid,
+                    'VariationDefinitionUid' => $variationDefinitionUid,
+                    'CategoryIds' => $categoryIds,
+                    'PrimaryCategoryId' => $primaryCategoryId,
+                    'Values' => $values,
+                ]
+            ];
 
-        // Return the response
-        return [
-            'status' => $request->status(),
-            'content' => $request->json(),
-        ];
+            // Call the method handler to create a product
+            $request = CreateProductAction::handle(products: $productToBeCreated);
+
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (Exception $e) {
+            // Return the error
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
-     * Create a product (RAW mode)
-     * This route creates a product with using an array provided as payload
+     * ### Create a product (RAW mode)
+     * This method creates a product with using an array provided as payload.
      *
-     * @param  array $products      array of products to be created
-     * @return mixed
+     * @param  array $products Array of products to be created
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
     public static function createRaw(
-        array $products
-    ): mixed {
-        // Make the API request
-        $request = CreateProductAction::handle(products: $products);
+        array $products,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Call the method handler to create a product
+            $request = CreateProductAction::handle(products: $products);
 
-        // Return the response
-        return [
-            'status' => $request->status(),
-            'content' => $request->json(),
-        ];
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (Exception $e) {
+            // Return the error
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
-     * Edit a product
-     * This route edits a product
+     * ### Update a product (RAW mode)
+     * This method updates a product with using an array provided as payload.
      *
-     * @param  int $id      id of the product to be edited
-     * @return mixed
+     * @param  int $id ID of the product to be updated
+     * @param  array $product Array of the product to be updated
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
-    public static function edit(int $id, array $array): mixed
-    {
-        // Make the API request
-        $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
-        ])
-            ->patch(config('laravel-struct.base_url')."/products/{$id}", $array);
+    public static function updateRaw(
+        int $id,
+        array $product,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Call the method handler to update a product
+            $request = UpdateProductAction::handle(
+                id: $id,
+                product: $product
+            );
 
-        // Return the response
-        return $request->json();
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (Exception $e) {
+            // Return the error
+            throw new Exception($e->getMessage());
+        }
     }
 
     /**
-     * Attribute Values
-     * This route shows all attribute values of a product
+     * ### Attribute Values
+     * This method shows all attribute values of a product.
      *
-     * @param  int $id      id of the product to be edited
-     * @return mixed
+     * @param  int $id ID of the product to be edited
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
-    public static function attributeValues(int $id): mixed
-    {
-        // Make the API request
-        $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
-        ])
-            ->get(config('laravel-struct.base_url')."/products/{$id}/attributevalues");
+    public static function attributeValues(
+        int $id,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Call the method handler to show the attribute values of a product
+            $request = ProductAttributeValuesAction::handle(id: $id);
 
-        // Return the response
-        return $request->json();
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (\Exception $e) {
+            // Return the error
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
-     * Classifications
-     * This route shows all classifications of a product
+     * ### Classifications
+     * This method shows all classifications of a product.
      *
-     * @param  int $id      id of the product to be edited
-     * @return mixed
+     * @param  int $id ID of the product to be edited
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
-    public static function classifications(int $id): mixed
-    {
-        // Make the API request
-        $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
-        ])
-            ->get(config('laravel-struct.base_url')."/products/{$id}/classifications");
+    public static function classifications(
+        int $id,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Call the method handler to show the classifications of a product
+            $request = ProductClassificationsAction::handle(id: $id);
 
-        // Return the response
-        return $request->json();
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (\Exception $e) {
+            // Return the error
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
-     * Enrichment Insights
-     * This route shows all enrichment insights of a product
+     * ### Enrichment Insights
+     * This method shows all enrichment insights of a product.
      *
-     * @param  int $id      id of the product to be edited
-     * @return mixed
+     * @param  int $id ID of the product to be edited
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
-    public static function enrichmentInsights(int $id): mixed
-    {
-        // Make the API request
-        $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
-        ])
-            ->get(config('laravel-struct.base_url')."/products/{$id}/enrichmentinsights");
+    public static function enrichmentInsights(
+        int $id,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Call the method handler to show the enrichment insights of a product
+            $request = ProductEnrichmentInsightsAction::handle(id: $id);
 
-        // Return the response
-        return $request->json();
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (\Exception $e) {
+            // Return the error
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
-     * References
-     * This route shows all references of a product
+     * ### References
+     * This method shows all references of a product.
      *
-     * @param  int $id      id of the product to be edited
-     * @return mixed
+     * @param  int $id ID of the product to be edited
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
-    public static function references(int $id): mixed
-    {
-        $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
-        ])
-            ->get(config('laravel-struct.base_url')."/products/{$id}/references");
+    public static function references(
+        int $id,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Call the method handler to show the references of a product
+            $request = ProductReferencesAction::handle(id: $id);
 
-        return $request->json();
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (\Exception $e) {
+            // Return the error
+            throw new \Exception($e->getMessage());
+        }
     }
 
     /**
-     * Variants
-     * This route shows all variants of a product
+     * ### Variants
+     * This method shows all variants of a product.
      *
-     * @param  int $id      id of the product to be edited
-     * @return mixed
+     * @param  int $id ID of the product to be edited
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
      */
-    public static function variants(int $id): mixed
-    {
-        // Make the API request
-        $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
-        ])
-            ->get(config('laravel-struct.base_url')."/products/{$id}/variants");
+    public static function variants(
+        int $id,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Call the method handler to show the variants of a product
+            $request = ProductVariantsAction::handle(id: $id);
 
-        // Return the response
-        return $request->json();
+            // Handle the response object
+            return ResponseHandler::make(
+                response: $request,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (\Exception $e) {
+            // Return the error
+            throw new \Exception($e->getMessage());
+        }
     }
 }
