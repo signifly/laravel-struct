@@ -60,25 +60,75 @@ This package was developed with simplicity in mind. It provides a fluent interfa
 
 It is plug-and-play, and does not require any additional configuration.
 
+Here is the example of a controller that uses the package:
+
 ```php
-use Signifly\LaravelStruct\Api\Product\Product;
+use Signifly\LaravelStruct\Api\Product\Product as StructProduct;
+
+...
 
 // Get all products
 public function index()
 {
-    return Product::all(limit: 100);
+    return StructProduct::all(limit: 100);
 }
 
 // Get a single product
 public function show(int $id)
 {
-    return Product::show(id: $id);
+    return StructProduct::show(id: $id);
+}
+
+public function store()
+{
+    return StructProduct::create(
+        productStructureUid: Str::uuid(),
+        variationDefinitionUid: Str::uuid(),
+        primaryCategoryId: 1,
+        categoryIds: ['1', '2'],
+        values: ProductValueSchema::make(
+            name: [
+                ProductNameSchema::make(
+                    content: 'The best Samsung TV ever produced',
+                ),
+                ProductNameSchema::make(
+                    content: 'Det allerbedste TV Samsung har at byde på',
+                    code: 'da-DK',
+                ),
+                ProductNameSchema::make(
+                    content: 'A melhor TV Samsung já produzida',
+                    code: 'pt-BR',
+                ),
+                ProductNameSchema::make(
+                    content: 'La mejor TV Samsung que se ha producido',
+                    code: 'es-ES',
+                ),
+                ProductNameSchema::make(
+                    content: 'La migliore TV Samsung mai prodotta',
+                    code: 'it-IT',
+                ),
+                ProductNameSchema::make(
+                    content: 'De beste Samsung TV ooit geproduceerd',
+                    code: 'nl-NL',
+                ),
+                ProductNameSchema::make(
+                    content: 'La meilleure TV Samsung jamais produite',
+                    code: 'fr-FR',
+                ),
+            ],
+            primaryImage: 3013,
+            extraImage: [2566, 5155, 5664],
+        ),
+    );
 }
 ```
+
+\*\* Note that you can rename the package if it conflicts with an existing Laravel Model.
 
 # Entities
 
 These are the following entities available in this package:
 
--   Product
--   Category
+- Product
+- Category
+- Languages
