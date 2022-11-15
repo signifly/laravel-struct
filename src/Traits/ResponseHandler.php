@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Signifly\LaravelStruct\Traits;
 
-use Illuminate\Http\Client\Response;
+use Exception;
+use Throwable;
 
 /**
  * ### Response Trait
@@ -20,12 +21,12 @@ trait ResponseHandler
      *
      * @param  \Illuminate\Http\Client\Response $response The response object to be returned
      * @param  bool $returnRawObject Returns the raw response object
-     * @return array|\Illuminate\Http\Client\Response
+     * @return mixed
      */
     public static function make(
         mixed $response,
         bool $returnRawObject = false,
-    ): array|\Illuminate\Http\Client\Response {
+    ): mixed {
         try {
             // Return the raw object
             if ($returnRawObject) {
@@ -34,9 +35,9 @@ trait ResponseHandler
 
             // Return the response
             return $response->json();
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             // Return the error
-            throw new \Exception($e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 }
