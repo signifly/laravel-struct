@@ -8,13 +8,13 @@ namespace Signifly\LaravelStruct\Api\Product\Schemas;
  * Class ProductSchema
  * @package Signifly\LaravelStruct\Api\Product\Schemas
  */
-class ProductDescriptionSchema
+class ProductNameSchema
 {
     /**
-     * ### Product Description Schema
-     * This method creates a schema for the product description.
+     * ### Product Name Schema
+     * This method creates a schema for the product name.
      *
-     * @param  string $content      content of the description
+     * @param  string $content      content of the name
      * @param  ?string $code        language code (default is set in the config file)
      * @return array
      */

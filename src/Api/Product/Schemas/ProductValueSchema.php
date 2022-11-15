@@ -14,22 +14,19 @@ class ProductValueSchema
      * ### Product Value Schema
      * This method creates a schema for the product value.
      *
-     * @param  string $name         name of the product
-     * @param  array $description   description of the product
-     * @param  int $primaryImage    id of the primary image
-     * @param  array $extraImage    ids of the extra images
+     * @param  array $name Name of the product
+     * @param  int $primaryImage ID of the primary image
+     * @param  array $extraImage IDs of the extra images
      * @return array
      */
     public static function make(
-        string $name,
-        array $description,
+        array $name,
         string $primaryImage,
         array $extraImage,
     ): array {
         // Return the response
         return [
             'Name' => $name,
-            'Description' => $description,
             'PrimaryImage' => $primaryImage,
             'ExtraImage' => $extraImage,
         ];
