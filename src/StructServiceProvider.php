@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct;
+namespace Signifly\Struct;
 
 use Illuminate\Support\ServiceProvider;
 
-class LaravelStructServiceProvider extends ServiceProvider
+class StructServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -37,10 +37,10 @@ class LaravelStructServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/laravel-struct.php' => config_path('laravel-struct.php'),
-            ], 'laravel-struct');
+                __DIR__.'/../config/struct.php' => config_path('struct.php'),
+            ], 'struct');
         }
 
-        $this->mergeConfigFrom(__DIR__.'/../config/laravel-struct.php', 'laravel-struct');
+        $this->mergeConfigFrom(__DIR__.'/../config/struct.php', 'struct');
     }
 }

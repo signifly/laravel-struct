@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct\Api\Language\Actions;
+namespace Signifly\Struct\Api\Language\Actions;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
@@ -19,11 +19,11 @@ class ShowAllLanguagesAction
     {
         try {
             // BaseUrl
-            $baseUrl = config('laravel-struct.base_url');
+            $baseUrl = config('struct.base_url');
 
             // Make the API request
             return Http::withHeaders([
-                'Authorization' => config('laravel-struct.token'),
+                'Authorization' => config('struct.token'),
             ])->get("{$baseUrl}/languages");
         } catch (Exception $e) {
             // Return the error

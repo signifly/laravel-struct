@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct\Api\Product\Schemas;
+namespace Signifly\Struct\Api\Product\Schemas;
 
 /**
  * Class ProductSchema
- * @package Signifly\LaravelStruct\Api\Product\Schemas
+ * @package Signifly\Struct\Api\Product\Schemas
  */
 class ProductSchema
 {

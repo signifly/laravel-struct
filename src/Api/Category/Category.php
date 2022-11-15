@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct\Api\Category;
+namespace Signifly\Struct\Api\Category;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -19,9 +19,9 @@ class Category
     {
         // Make the API request
         $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
+            'Authorization' => config('struct.token'),
         ])
-            ->get(config('laravel-struct.base_url').'/categories');
+            ->get(config('struct.base_url').'/categories');
 
         // Return the response
         return $request->json();
@@ -38,9 +38,9 @@ class Category
     {
         // Make the API request
         $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
+            'Authorization' => config('struct.token'),
         ])
-            ->get(config('laravel-struct.base_url')."/categories/{$id}");
+            ->get(config('struct.base_url')."/categories/{$id}");
 
         // Return the response
         return $request->json();

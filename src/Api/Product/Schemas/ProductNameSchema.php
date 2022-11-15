@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct\Api\Product\Schemas;
+namespace Signifly\Struct\Api\Product\Schemas;
 
 /**
  * Class ProductSchema
- * @package Signifly\LaravelStruct\Api\Product\Schemas
+ * @package Signifly\Struct\Api\Product\Schemas
  */
 class ProductNameSchema
 {
@@ -23,7 +23,7 @@ class ProductNameSchema
         string $code = null,
     ): array {
         // Set the limit of records to be returned
-        $languageCode = $code ?? config('laravel-struct.default_language') ?? 'en-GB';
+        $languageCode = $code ?? config('struct.default_language') ?? 'en-GB';
 
         // Return the response
         return [

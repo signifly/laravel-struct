@@ -36,7 +36,7 @@ class Language
     ): array|\Illuminate\Http\Client\Response {
         try {
             // Set the limit of records to be returned
-            $limitOfRecords = $limit ?? config('laravel-struct.per_page') ?? 1000;
+            $limitOfRecords = $limit ?? config('struct.per_page') ?? 1000;
 
             // Call the method handler to retrieve all languages
             $request = ShowAllLanguagesAction::handle();

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct\Api\Product;
+namespace Signifly\Struct\Api\Product;
 
 use Exception;
-use Signifly\LaravelStruct\Traits\ResponseHandler;
-use Signifly\LaravelStruct\Api\Product\Actions\{
+use Signifly\Struct\Traits\ResponseHandler;
+use Signifly\Struct\Api\Product\Actions\{
     ShowProductAction,
     CreateProductAction,
     ProductAttributeValuesAction,
@@ -22,7 +22,7 @@ use Signifly\LaravelStruct\Api\Product\Actions\{
  * ### Class Product
  * This class handles all the product related actions
  *
- * @package Signifly\LaravelStruct\Api\Product
+ * @package Signifly\Struct\Api\Product
  */
 class Product
 {
@@ -46,7 +46,7 @@ class Product
     ): array|\Illuminate\Http\Client\Response {
         try {
             // Set the limit of records to be returned
-            $limitOfRecords = $limit ?? config('laravel-struct.per_page') ?? 1000;
+            $limitOfRecords = $limit ?? config('struct.per_page') ?? 1000;
 
             // Call the method handler to retrieve all products
             $request = ShowAllProductsAction::handle(

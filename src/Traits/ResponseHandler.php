@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct\Traits;
+namespace Signifly\Struct\Traits;
 
 use Exception;
 use Throwable;
@@ -11,7 +11,7 @@ use Throwable;
  * ### Response Trait
  * This class handles the responses.
  *
- * @package Signifly\LaravelStruct\Traits
+ * @package Signifly\Struct\Traits
  */
 trait ResponseHandler
 {

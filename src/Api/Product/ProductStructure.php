@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct\Api\Product;
+namespace Signifly\Struct\Api\Product;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -19,9 +19,9 @@ class ProductStructure
     {
         // Make the API request
         $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
+            'Authorization' => config('struct.token'),
         ])
-            ->get(config('laravel-struct.base_url').'/productstructure');
+            ->get(config('struct.base_url').'/productstructure');
 
         // Return the response
         return $request->json();
@@ -38,9 +38,9 @@ class ProductStructure
     {
         // Make the API request
         $request = Http::withHeaders([
-            'Authorization' => config('laravel-struct.token'),
+            'Authorization' => config('struct.token'),
         ])
-            ->get(config('laravel-struct.base_url')."/productstructure/{$id}");
+            ->get(config('struct.base_url')."/productstructure/{$id}");
 
         // Return the response
         return $request->json();

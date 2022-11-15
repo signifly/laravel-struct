@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct\Api\Product\Actions;
+namespace Signifly\Struct\Api\Product\Actions;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
@@ -20,11 +20,11 @@ class ShowProductAction
     {
         try {
             // BaseUrl
-            $baseUrl = config('laravel-struct.base_url');
+            $baseUrl = config('struct.base_url');
 
             // Make the API request
             return Http::withHeaders([
-                'Authorization' => config('laravel-struct.token'),
+                'Authorization' => config('struct.token'),
             ])->get("{$baseUrl}/products/{$id}");
         } catch (Exception $e) {
             // Return the error
