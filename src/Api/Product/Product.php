@@ -127,13 +127,7 @@ class Product
             ];
 
             // Call the method handler to create a product
-            $request = CreateProductAction::handle(products: $productToBeCreated);
-
-            // Handle the response object
-            return ResponseHandler::make(
-                response: $request,
-                returnRawObject: $returnRawObject,
-            );
+            return CreateProductAction::handle(products: $productToBeCreated);
         } catch (Exception $e) {
             // Return the error
             throw new Exception($e->getMessage());
@@ -142,7 +136,7 @@ class Product
 
     /**
      * ### Create a product (RAW mode)
-     * This method creates a product with using an array provided as payload.
+     * This method creates a product using an array provided as payload.
      *
      * @param  array $products Array of products to be created
      * @param  bool $returnRawObject Returns the raw response object
@@ -169,7 +163,7 @@ class Product
 
     /**
      * ### Update a product (RAW mode)
-     * This method updates a product with using an array provided as payload.
+     * This method updates a product using an array provided as payload.
      *
      * @param  int $id ID of the product to be updated
      * @param  array $product Array of the product to be updated
