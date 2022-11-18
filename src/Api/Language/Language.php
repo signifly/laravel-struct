@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Signifly\LaravelStruct\Api\Language;
+namespace Signifly\Struct\Api\Language;
 
 use Exception;
-use Signifly\LaravelStruct\Traits\ResponseHandler;
-use Signifly\LaravelStruct\Api\Language\Actions\{
+use Signifly\Struct\Traits\ResponseHandler;
+use Signifly\Struct\Api\Language\Actions\{
     ShowLanguageAction,
     CreateLanguageAction,
     UpdateLanguageAction,
@@ -18,7 +18,7 @@ use Throwable;
  * ### Class Language
  * This class handles all the language related actions
  *
- * @package Signifly\LaravelStruct\Api\Language
+ * @package Signifly\Struct\Api\Language
  */
 class Language
 {
@@ -35,9 +35,6 @@ class Language
         bool $returnRawObject = false,
     ): array|\Illuminate\Http\Client\Response {
         try {
-            // Set the limit of records to be returned
-            $limitOfRecords = $limit ?? config('struct.per_page') ?? 1000;
-
             // Call the method handler to retrieve all languages
             $request = ShowAllLanguagesAction::handle();
 
@@ -117,12 +114,12 @@ class Language
      *
      * @param  array $language Array with the language to be created
      * @param  bool $returnRawObject Returns the raw response object
-     * @return array|\Illuminate\Http\Client\Response
+     * @return int|\Illuminate\Http\Client\Response
      */
     public static function createRaw(
         array $language,
         bool $returnRawObject = false,
-    ): array|\Illuminate\Http\Client\Response {
+    ): int|\Illuminate\Http\Client\Response {
         try {
             // Call the method handler to create a language
             $request = CreateLanguageAction::handle(language: $language);
@@ -146,14 +143,14 @@ class Language
      * @param  string $cultureCode Code of the language to be updated
      * @param  string $name Name of the language to be updated
      * @param  bool $returnRawObject Returns the raw response object
-     * @return mixed
+     * @return null|\Illuminate\Http\Client\Response
      */
     public static function update(
         int $id,
         string $cultureCode,
         string $name,
         bool $returnRawObject = false,
-    ): mixed {
+    ): null|\Illuminate\Http\Client\Response {
         try {
             // Language Array
             $languageToBeUpdated = [
@@ -179,12 +176,12 @@ class Language
      *
      * @param  array $language Array with the language to be updated
      * @param  bool $returnRawObject Returns the raw response object
-     * @return mixed
+     * @return null|\Illuminate\Http\Client\Response
      */
     public static function updateRaw(
         array $language,
         bool $returnRawObject = false,
-    ): mixed {
+    ): null|\Illuminate\Http\Client\Response {
         try {
             // Call the method handler to update a product
             $request = UpdateLanguageAction::handle(language: $language);
