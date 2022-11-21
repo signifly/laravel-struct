@@ -9,14 +9,25 @@ The features are not stable and the API might change.
 
 ---
 
-<p align="center"><a href="https://github.com/signifly/laravel-struct" target="_blank"><img src="./assets/laravel_struct_logo.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center">
+    <a href="https://github.com/signifly/laravel-struct" target="_blank">
+        <img src="./assets/laravel_struct_logo.svg" width="400" alt="Laravel Logo">
+    </a>
+</p>
 
 <p align="center">
-<a href="https://travis-ci.org/signifly/laravel-struct"><img src="https://travis-ci.org/signifly/struct.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/signifly/laravel-struct"><img src="https://img.shields.io/packagist/dt/signifly/laravel-struct" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/signifly/laravel-struct"><img src="https://img.shields.io/packagist/v/signifly/laravel-struct" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/signifly/laravel-struct"><img src="https://img.shields.io/packagist/l/signifly/laravel-struct" alt="License"></a>
-
+    <a href="https://travis-ci.org/signifly/laravel-struct">
+        <img src="https://travis-ci.org/signifly/struct.svg" alt="Build Status">
+    </a>
+    <a href="https://packagist.org/packages/signifly/laravel-struct">
+        <img src="https://img.shields.io/packagist/dt/signifly/laravel-struct" alt="Total Downloads">
+    </a>
+    <a href="https://packagist.org/packages/signifly/laravel-struct">
+        <img src="https://img.shields.io/packagist/v/signifly/laravel-struct" alt="Latest Stable Version">
+    </a>
+    <a href="https://packagist.org/packages/signifly/laravel-struct">
+        <img src="https://img.shields.io/packagist/l/signifly/laravel-struct" alt="License">
+    </a>
 </p>
 
 # Laravel Struct
@@ -63,7 +74,7 @@ It is plug-and-play, and does not require any additional configuration.
 Here is the example of a controller that uses the package:
 
 ```php
-use Signifly\Struct\Api\Product\Product as StructProduct;
+use Signifly\Struct\Api\Products\Product as StructProduct;
 
 ...
 
