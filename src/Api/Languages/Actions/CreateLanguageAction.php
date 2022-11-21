@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Signifly\Struct\Api\Product\Actions;
+namespace Signifly\Struct\Api\Languages\Actions;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
 
-class ProductClassificationsAction
+class CreateLanguageAction
 {
     /**
-     * ### Product Classifications
-     * This action shows the product classifications.
+     * ### Create a language
+     * This action creates a new language.
      *
-     * @param  int $id ID of the product to be shown
+     * @param  array $language Array with the language to be created
      * @return \Illuminate\Http\Client\Response
      */
-    public static function handle(int $id): \Illuminate\Http\Client\Response
+    public static function handle(array $language): \Illuminate\Http\Client\Response
     {
         try {
             // BaseUrl
@@ -25,7 +25,7 @@ class ProductClassificationsAction
             // Make the API request
             return Http::withHeaders([
                 'Authorization' => config('struct.token'),
-            ])->get("{$baseUrl}/products/{$id}/classifications");
+            ])->post("{$baseUrl}/languages", $language);
         } catch (Exception $e) {
             // Return the error
             return throw new Exception($e->getMessage());

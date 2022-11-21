@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Signifly\Struct\Api\Product;
+namespace Signifly\Struct\Api\Products;
 
 use Exception;
 use Signifly\Struct\Traits\ResponseHandler;
-use Signifly\Struct\Api\Product\Actions\{
+use Signifly\Struct\Api\Products\Actions\{
     ShowProductAction,
     CreateProductAction,
     ProductAttributeValuesAction,
@@ -22,7 +22,7 @@ use Signifly\Struct\Api\Product\Actions\{
  * ### Class Product
  * This class handles all the product related actions
  *
- * @package Signifly\Struct\Api\Product
+ * @package Signifly\Struct\Api\Products
  */
 class Product
 {
@@ -98,7 +98,6 @@ class Product
      * This method creates a product.
      *
      * @param  string $productStructureUid UID of the product structure to be used
-     * @param  string $variationDefinitionUid UID of the variation definition to be used
      * @param  array $categoryIds Array of category ids to be used
      * @param  int $primaryCategoryId ID of the primary category to be used
      * @param  array $values Array of properties to be used
@@ -107,9 +106,8 @@ class Product
      */
     public static function create(
         string $productStructureUid,
-        string $variationDefinitionUid,
-        array $categoryIds,
-        int $primaryCategoryId,
+        array $categoryIds = null,
+        int $primaryCategoryId = null,
         array $values,
         bool $returnRawObject = false,
     ): array|\Illuminate\Http\Client\Response {
@@ -119,15 +117,17 @@ class Product
             $productToBeCreated = [
                 [
                     'ProductStructureUid' => $productStructureUid,
-                    'VariationDefinitionUid' => $variationDefinitionUid,
                     'CategoryIds' => $categoryIds,
                     'PrimaryCategoryId' => $primaryCategoryId,
                     'Values' => $values,
                 ]
             ];
 
-            // Call the method handler to create a product
-            return CreateProductAction::handle(products: $productToBeCreated);
+            // Call the method to create a product
+            return self::createRaw(
+                products: $productToBeCreated,
+                returnRawObject: $returnRawObject,
+            );
         } catch (Exception $e) {
             // Return the error
             throw new Exception($e->getMessage());

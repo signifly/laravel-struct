@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Signifly\Struct\Api\Product\Actions;
+namespace Signifly\Struct\Api\Products\Actions;
 
 use Exception;
 use Illuminate\Support\Facades\Http;

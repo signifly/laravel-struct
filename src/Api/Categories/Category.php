@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Signifly\Struct\Api\Category;
+namespace Signifly\Struct\Api\Categories;
 
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;

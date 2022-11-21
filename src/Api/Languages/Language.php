@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Signifly\Struct\Api\Language;
+namespace Signifly\Struct\Api\Languages;
 
 use Exception;
+use Throwable;
 use Signifly\Struct\Traits\ResponseHandler;
-use Signifly\Struct\Api\Language\Actions\{
+use Signifly\Struct\Api\Languages\Actions\{
     ShowLanguageAction,
     CreateLanguageAction,
     UpdateLanguageAction,
     ShowAllLanguagesAction,
 };
-use Throwable;
 
 /**
  * ### Class Language

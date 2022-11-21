@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Signifly\Struct\Api\Product\Actions;
+namespace Signifly\Struct\Api\Languages\Actions;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
 
-class ShowProductAction
+class UpdateLanguageAction
 {
     /**
-     * ### Show a product
-     * This action shows a single product.
+     * ### Update a language
+     * This action updates a new language.
      *
-     * @param  int $id ID of the product to be shown
+     * @param  array $language Array with the language to be updated
      * @return \Illuminate\Http\Client\Response
      */
-    public static function handle(int $id): \Illuminate\Http\Client\Response
+    public static function handle(array $language): \Illuminate\Http\Client\Response
     {
         try {
             // BaseUrl
@@ -25,7 +25,7 @@ class ShowProductAction
             // Make the API request
             return Http::withHeaders([
                 'Authorization' => config('struct.token'),
-            ])->get("{$baseUrl}/products/{$id}");
+            ])->put("{$baseUrl}/languages", $language);
         } catch (Exception $e) {
             // Return the error
             return throw new Exception($e->getMessage());

@@ -2,21 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Signifly\Struct\Api\Product\Actions;
+namespace Signifly\Struct\Api\Languages\Actions;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
 
-class ProductAttributeValuesAction
+class ShowAllLanguagesAction
 {
     /**
-     * ### Product Attribute Values
-     * This action shows the product attribute values.
+     * ### Show all languages
+     * This action shows all languages.
      *
-     * @param  int $id ID of the product to be shown
      * @return \Illuminate\Http\Client\Response
      */
-    public static function handle(int $id): \Illuminate\Http\Client\Response
+    public static function handle(): \Illuminate\Http\Client\Response
     {
         try {
             // BaseUrl
@@ -25,7 +24,7 @@ class ProductAttributeValuesAction
             // Make the API request
             return Http::withHeaders([
                 'Authorization' => config('struct.token'),
-            ])->get("{$baseUrl}/products/{$id}/attributevalues");
+            ])->get("{$baseUrl}/languages");
         } catch (Exception $e) {
             // Return the error
             return throw new Exception($e->getMessage());

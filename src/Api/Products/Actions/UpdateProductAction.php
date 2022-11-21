@@ -2,22 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Signifly\Struct\Api\Product\Actions;
+namespace Signifly\Struct\Api\Products\Actions;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
 
-class ProductVariantsAction
+class UpdateProductAction
 {
     /**
-     * ### Product Variants
-     * This action shows the product variants.
+     * ### Update a product
+     * This action updates a product.
      *
-     * @param  int $id ID of the product to be shown
+     * @param  int $id ID of the product to be updated
+     * @param  array $products Array of products to be created
      * @return \Illuminate\Http\Client\Response
      */
-    public static function handle(int $id): \Illuminate\Http\Client\Response
-    {
+    public static function handle(
+        int $id,
+        array $product,
+    ): \Illuminate\Http\Client\Response {
         try {
             // BaseUrl
             $baseUrl = config('struct.base_url');
@@ -25,7 +28,7 @@ class ProductVariantsAction
             // Make the API request
             return Http::withHeaders([
                 'Authorization' => config('struct.token'),
-            ])->get("{$baseUrl}/products/{$id}/variants");
+            ])->post("{$baseUrl}/products/{$id}", $product);
         } catch (Exception $e) {
             // Return the error
             return throw new Exception($e->getMessage());

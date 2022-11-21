@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Signifly\Struct\Api\Product\Schemas;
+namespace Signifly\Struct\Api\Products\Schemas;
 
 /**
  * Class ProductSchema
- * @package Signifly\Struct\Api\Product\Schemas
+ * @package Signifly\Struct\Api\Products\Schemas
  */
 class ProductSchema
 {
