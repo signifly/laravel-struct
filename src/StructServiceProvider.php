@@ -15,7 +15,7 @@ class StructServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerConfig();
+        $this->mergeConfigFrom(__DIR__.'/../config/struct.php', 'struct');
     }
 
     /**
@@ -25,22 +25,10 @@ class StructServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
-    }
-
-    /**
-     * Register config
-     *
-     * @return void
-     */
-    protected function registerConfig(): void
-    {
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/struct.php' => config_path('struct.php'),
             ], 'struct');
         }
-
-        $this->mergeConfigFrom(__DIR__.'/../config/struct.php', 'struct');
     }
 }
