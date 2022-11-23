@@ -97,17 +97,19 @@ class Product
      * ### Create a product
      * This method creates a product.
      *
-     * @param  string $productStructureUid UID of the product structure to be used
+     * @param  string|int $productStructureUid UID of the product structure to be used
+     * @param  string|int $variationDefinitionUid UID of the variation definition to be used
      * @param  array $categoryIds Array of category ids to be used
-     * @param  int $primaryCategoryId ID of the primary category to be used
+     * @param  string|int $primaryCategoryId ID of the primary category to be used
      * @param  array $values Array of properties to be used
      * @param  bool $returnRawObject Returns the raw response object
      * @return array|\Illuminate\Http\Client\Response
      */
     public static function create(
-        string $productStructureUid,
+        string|int $productStructureUid,
+        string|int $variationDefinitionUid = null,
         array $categoryIds = null,
-        int $primaryCategoryId = null,
+        string|int $primaryCategoryId = null,
         array $values,
         bool $returnRawObject = false,
     ): array|\Illuminate\Http\Client\Response {
@@ -117,6 +119,7 @@ class Product
             $productToBeCreated = [
                 [
                     'ProductStructureUid' => $productStructureUid,
+                    'VariationDefinitionUid' => $variationDefinitionUid,
                     'CategoryIds' => $categoryIds,
                     'PrimaryCategoryId' => $primaryCategoryId,
                     'Values' => $values,
@@ -162,24 +165,82 @@ class Product
     }
 
     /**
+     * ### Update a product
+     * This method updates a product.
+     *
+     * @param  int $id ID of the product to be updated
+     * @param  string|int $productStructureUid UID of the product structure to be used
+     * @param  string|int $variationDefinitionUid UID of the variation definition to be used
+     * @param  array $categoryIds Array of category ids to be used
+     * @param  string|int $primaryCategoryId ID of the primary category to be used
+     * @param  array $values Array of properties to be used
+     * @param  string $ownerReference Add a reference to the system that creates this classification to be able to distinguish the classification from classifications made by other systems
+     * @param  bool $removeCategoriesWithSameOwnerReference Set true if you want to remove existing classifications with the provided ownerReference, which is not part to the supplied classifications
+     * @param  bool $returnRawObject Returns the raw response object
+     * @return array|\Illuminate\Http\Client\Response
+     */
+    public static function update(
+        int $id,
+        string|int $productStructureUid = null,
+        string|int $variationDefinitionUid = null,
+        array $categoryIds = null,
+        string|int $primaryCategoryId = null,
+        array $values = null,
+        string $ownerReference = null,
+        bool $removeCategoriesWithSameOwnerReference = false,
+        bool $returnRawObject = false,
+    ): array|\Illuminate\Http\Client\Response {
+        try {
+            // Product Array
+            // The product must be wrapped in an array before sending it to the API
+            $productToBeUpdated = [
+                [
+                    'ProductId' => $id,
+                    'UpdateModel' => [
+                        'ProductStructureUid' => $productStructureUid,
+                        'VariationDefinitionUid' => $variationDefinitionUid,
+                        'CategoryIds' => $categoryIds,
+                        'PrimaryCategoryId' => $primaryCategoryId,
+                        'Values' => $values,
+                    ]
+                ]
+            ];
+
+            // Call the method to update a product
+            return self::updateRaw(
+                products: $productToBeUpdated,
+                ownerReference: $ownerReference,
+                removeCategoriesWithSameOwnerReference: $removeCategoriesWithSameOwnerReference,
+                returnRawObject: $returnRawObject,
+            );
+        } catch (Exception $e) {
+            // Return the error
+            throw new Exception($e->getMessage());
+        }
+    }
+
+    /**
      * ### Update a product (RAW mode)
      * This method updates a product using an array provided as payload.
      *
-     * @param  int $id ID of the product to be updated
-     * @param  array $product Array of the product to be updated
+     * @param  array $products Array of the product to be updated
+     * @param  string $ownerReference Add a reference to the system that creates this classification to be able to distinguish the classification from classifications made by other systems
+     * @param  bool $removeCategoriesWithSameOwnerReference Set true if you want to remove existing classifications with the provided ownerReference, which is not part to the supplied classifications
      * @param  bool $returnRawObject Returns the raw response object
      * @return array|\Illuminate\Http\Client\Response
      */
     public static function updateRaw(
-        int $id,
-        array $product,
+        array $products,
+        string $ownerReference = null,
+        bool $removeCategoriesWithSameOwnerReference = false,
         bool $returnRawObject = false,
     ): array|\Illuminate\Http\Client\Response {
         try {
             // Call the method handler to update a product
             $request = UpdateProductAction::handle(
-                id: $id,
-                product: $product
+                products: $products,
+                ownerReference: $ownerReference,
+                removeCategoriesWithSameOwnerReference: $removeCategoriesWithSameOwnerReference,
             );
 
             // Handle the response object
