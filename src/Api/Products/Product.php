@@ -38,7 +38,7 @@ class Product
      * @return array|\Illuminate\Http\Client\Response
      */
     public static function all(
-        int $limit,
+        int $limit = null,
         int $afterId = null,
         bool $includeArchived = false,
         bool $returnRawObject = false,

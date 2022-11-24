@@ -30,7 +30,11 @@ class ShowAllProductsAction
             // Make the API request
             return Http::withHeaders([
                 'Authorization' => config('struct.token'),
-            ])->get("{$baseUrl}/products");
+            ])->get("{$baseUrl}/products", [
+                'limit' => $limit,
+                'afterId' => $afterId,
+                'includeArchived' => $includeArchived
+            ]);
         } catch (Exception $e) {
             // Return the error
             return throw new Exception($e->getMessage());
