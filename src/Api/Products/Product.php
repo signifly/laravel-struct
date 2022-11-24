@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace Signifly\Struct\Api\Products;
 
 use Exception;
-use Illuminate\Support\Arr;
 use Signifly\Struct\Traits\ResponseHandler;
 use Signifly\Struct\Api\Products\Actions\{
     ShowProductAction,
     CreateProductAction,
-    ProductAttributeValuesAction,
     ProductClassificationsAction,
     ProductEnrichmentInsightsAction,
     ProductReferencesAction,
@@ -21,7 +19,7 @@ use Signifly\Struct\Api\Products\Actions\{
 
 /**
  * ### Class Product
- * This class handles all the product related actions
+ * This class handles all product related methods
  *
  * @package Signifly\Struct\Api\Products
  */
@@ -258,33 +256,6 @@ class Product
         } catch (Exception $e) {
             // Return the error
             throw new Exception($e->getMessage());
-        }
-    }
-
-    /**
-     * ### Attribute Values
-     * This method shows all attribute values of a product.
-     *
-     * @param  int $id ID of the product to be edited
-     * @param  bool $returnRawObject Returns the raw response object
-     * @return array|\Illuminate\Http\Client\Response
-     */
-    public static function attributeValues(
-        int $id,
-        bool $returnRawObject = false,
-    ): array|\Illuminate\Http\Client\Response {
-        try {
-            // Call the method handler to show the attribute values of a product
-            $request = ProductAttributeValuesAction::handle(id: $id);
-
-            // Handle the response object
-            return ResponseHandler::make(
-                response: $request,
-                returnRawObject: $returnRawObject,
-            );
-        } catch (\Exception $e) {
-            // Return the error
-            throw new \Exception($e->getMessage());
         }
     }
 
