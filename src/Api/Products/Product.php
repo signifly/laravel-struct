@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Signifly\Struct\Api\Products;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Signifly\Struct\Traits\ResponseHandler;
 use Signifly\Struct\Api\Products\Actions\{
     ShowProductAction,
@@ -110,20 +111,23 @@ class Product
         string|int $variationDefinitionUid = null,
         array $categoryIds = null,
         string|int $primaryCategoryId = null,
-        array $values,
+        array $values = [],
         bool $returnRawObject = false,
     ): array|\Illuminate\Http\Client\Response {
         try {
             // Product Array
             // The product must be wrapped in an array before sending it to the API
             $productToBeCreated = [
-                [
-                    'ProductStructureUid' => $productStructureUid,
-                    'VariationDefinitionUid' => $variationDefinitionUid,
-                    'CategoryIds' => $categoryIds,
-                    'PrimaryCategoryId' => $primaryCategoryId,
-                    'Values' => $values,
-                ]
+                collect(
+                    [
+                        'ProductStructureUid' => $productStructureUid,
+                        'VariationDefinitionUid' => $variationDefinitionUid,
+                        'CategoryIds' => $categoryIds,
+                        'PrimaryCategoryId' => $primaryCategoryId,
+                        'Values' => $values,
+                    ]
+                    // Remove the null keys
+                )->filter(fn ($value) => !is_null($value))
             ];
 
             // Call the method to create a product
@@ -196,13 +200,16 @@ class Product
             $productToBeUpdated = [
                 [
                     'ProductId' => $id,
-                    'UpdateModel' => [
-                        'ProductStructureUid' => $productStructureUid,
-                        'VariationDefinitionUid' => $variationDefinitionUid,
-                        'CategoryIds' => $categoryIds,
-                        'PrimaryCategoryId' => $primaryCategoryId,
-                        'Values' => $values,
-                    ]
+                    'UpdateModel' => collect(
+                        [
+                            'ProductStructureUid' => $productStructureUid,
+                            'VariationDefinitionUid' => $variationDefinitionUid,
+                            'CategoryIds' => $categoryIds,
+                            'PrimaryCategoryId' => $primaryCategoryId,
+                            'Values' => $values,
+                        ]
+                        // Remove the null keys
+                    )->filter(fn ($value) => !is_null($value))
                 ]
             ];
 
